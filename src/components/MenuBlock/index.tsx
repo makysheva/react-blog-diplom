@@ -3,7 +3,6 @@ import { Menu, Layout } from 'antd'
 import 'antd/dist/antd.css'
 
 const { Sider } = Layout
-// const { SubMenu } = Menu
 
 export const MenuBlock: FC = () => {
     const [collapsed, setCollapsed] = useState<boolean>(false)

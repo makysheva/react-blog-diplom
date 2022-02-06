@@ -1,12 +1,16 @@
 import { FC } from 'react'
-import { Form, Input, Button } from 'antd'
-import { UserOutlined, LockOutlined } from '@ant-design/icons'
+import { Button, Form, Input, Modal } from 'antd'
+import { LockOutlined, UserOutlined } from '@ant-design/icons'
 
-// import styles from './SignUp.module.scss'
+interface LoginModalProps {
+    open: boolean
+    onClose: () => void
+    handleClickOpenSignUp: Function
+}
 
-export const LoginForm: FC = (): React.ReactElement => {
+export const LoginModal: FC<LoginModalProps> = ({ open, onClose, handleClickOpenSignUp }): React.ReactElement => {
     return (
-        <>
+        <Modal title="Войти" visible={open} onOk={onClose} onCancel={onClose}>
             <Form
                 name="normal_login"
                 className="login-form"
@@ -32,8 +36,9 @@ export const LoginForm: FC = (): React.ReactElement => {
                     <Button type="primary" htmlType="submit" className="login-form-button">
                         Войти
                     </Button>
+                    или <a href="" onClick={(e: React.MouseEvent) => handleClickOpenSignUp(e)}>Зарегистрироваться!</a>
                 </Form.Item>
             </Form>
-        </>
+        </Modal >
     )
-}
+};
