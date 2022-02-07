@@ -1,9 +1,9 @@
 import { FC } from 'react'
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { Form, Button, Modal, Input, Space } from 'antd'
 import { UserOutlined, MailOutlined, LockOutlined, EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'
 
-interface RegisterModalProps {
+export interface RegisterModalProps {
     open: boolean
     onClose: () => void
 }
@@ -14,81 +14,91 @@ type FormData = {
     password: string
 }
 
-export const RegisterModal: FC<RegisterModalProps> = ({ open, onClose }): React.ReactElement => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
-    const onSubmit = (data: any) => {
+export const RegisterModal: FC<RegisterModalProps> = ({ open, onClose }) => {
+    const { control, register, handleSubmit, formState: { errors }, reset, setValue } = useForm<FormData>();
+    const onSubmit: SubmitHandler<FormData> = (data) => {
         console.log(data)
         reset()
     }
 
     return (
         <Modal title="Зарегистрироваться" visible={open} onOk={onClose} onCancel={onClose}>
-            <Form
-                name="normal_login"
-                className="login-form"
-                initialValues={{
-                    remember: true,
-                }}
-            >
-                <Form.Item
-                    name="username"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Введите имя',
-                        },
-                    ]}
-                >
-                    <Input
-                        {...register("username")}
-                        prefix={<UserOutlined className="site-form-item-icon" />}
-                        placeholder="Username"
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Form.Item>
+                    <Controller
+                        render={
+                            ({ field }) =>
+                                <Input
+                                    {...field}
+                                    prefix={<UserOutlined className="site-form-item-icon" />}
+                                    placeholder="Введите имя"
+                                    {...errors.username && "Введите имя"}
+                                />
+                        }
+                        name="username"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                            required: true
+                        }}
                     />
                 </Form.Item>
-                <Form.Item
-                    name="email"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Введите email',
-                        },
-                    ]}
-                >
-                    <Input
+
+                <Form.Item>
+                    <Controller
+                        render={
+                            ({ field }) =>
+                                <Input
+                                    {...field}
+                                    prefix={<MailOutlined className="site-form-item-icon" />}
+                                    placeholder="Введите email"
+                                    {...errors.email && "Введите email"}
+                                />
+                        }
                         {...register('email', {
                             pattern: {
                                 value: /^[A-Z0-9._%+-]+@[A-Z0-9._%+-]+\.[A-Z]{2,}$/i,
                                 message: 'Это неверная почта!',
                             },
                         })}
-                        prefix={<MailOutlined className="site-form-item-icon" />}
-                        placeholder="Email"
+                        name="email"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                            required: true
+                        }}
                     />
                 </Form.Item>
-                <Form.Item
-                    name="password"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Введите пароль',
-                        },
-                    ]}
-                >
-                    <Space direction="vertical" style={{ width: '100%' }}>
-                        <Input.Password
-                            prefix={<LockOutlined className="site-form-item-icon" />}
-                            placeholder="Password"
-                            iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-                            {...register("password")}
-                        />
-                    </Space>
+
+                <Form.Item>
+                    <Controller
+                        render={
+                            ({ field }) =>
+                                <Space direction="vertical" style={{ width: '100%' }}>
+                                    <Input.Password
+                                        {...field}
+                                        prefix={<LockOutlined className="site-form-item-icon" />}
+                                        placeholder="Password"
+                                        iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                                        {...errors.password && "Введите пароль"}
+                                    />
+                                </Space>
+                        }
+                        {...register("password")}
+                        name="password"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                            required: true
+                        }}
+                    />
                 </Form.Item>
                 <Form.Item>
-                    <Button onClick={handleSubmit(onSubmit)} type="primary" htmlType="submit" className="login-form-button">
+                    <Button block type="primary" htmlType="submit" className="login-form-button">
                         Зарегистрироваться
                     </Button>
                 </Form.Item>
-            </Form>
+            </form>
         </Modal >
     )
 };
