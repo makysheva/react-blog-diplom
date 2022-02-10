@@ -4,7 +4,12 @@ import 'antd/dist/antd.css'
 
 const { Sider } = Layout
 
-export const MenuBlock: FC = () => {
+interface MenuBlockProps {
+    handleClickOpenSignIn: () => void
+    isAuth: boolean
+}
+
+export const MenuBlock: FC<MenuBlockProps> = ({ handleClickOpenSignIn, isAuth }) => {
     const [collapsed, setCollapsed] = useState<boolean>(false)
 
     const onCollapse = (collapsed: boolean) => {
@@ -18,13 +23,21 @@ export const MenuBlock: FC = () => {
                 <Menu.Item key="1">
                     Главная
                 </Menu.Item>
-                <Menu.Item key="2">
-                    Мой профиль
-                </Menu.Item>
-                <Menu.Item key="3">
-                    Создать запись
-                </Menu.Item>
-                <Menu.Item key="4">
+                {
+                    isAuth &&
+                    <Menu.Item key="2">
+                        Мой профиль
+                    </Menu.Item>
+                }
+
+                {
+                    isAuth &&
+                    <Menu.Item key="3">
+                        Создать запись
+                    </Menu.Item>
+                }
+
+                <Menu.Item key="4" onClick={handleClickOpenSignIn}>
                     Войти
                 </Menu.Item>
             </Menu>

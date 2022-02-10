@@ -1,7 +1,9 @@
 import { FC } from 'react'
-import { SubmitHandler, useForm, Controller } from "react-hook-form";
+import { SubmitHandler, useForm, Controller } from "react-hook-form"
 import { Form, Button, Modal, Input, Space } from 'antd'
 import { UserOutlined, MailOutlined, LockOutlined, EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'
+import axios from 'axios'
+import { instance } from '../../config/axios'
 
 export interface RegisterModalProps {
     open: boolean
@@ -9,16 +11,30 @@ export interface RegisterModalProps {
 }
 
 type FormData = {
-    username: string
+    fullName: string
     email: string
     password: string
 }
 
 export const RegisterModal: FC<RegisterModalProps> = ({ open, onClose }) => {
-    const { control, register, handleSubmit, formState: { errors }, reset, setValue } = useForm<FormData>();
-    const onSubmit: SubmitHandler<FormData> = (data) => {
-        console.log(data)
-        reset()
+    const { control, register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
+
+    const onSubmit: SubmitHandler<FormData> = async (data) => {
+        try {
+            instance.post('/auth/register', {
+                fullName: data.fullName,
+                email: data.email,
+                password: data.password,
+            })
+                .then(res => {
+                    window.localStorage.setItem('token', res.data.token)
+                })
+            reset()
+            alert("Успешная регистрация!")
+            onClose()
+        } catch (error) {
+            alert(error);
+        }
     }
 
     return (
@@ -32,10 +48,10 @@ export const RegisterModal: FC<RegisterModalProps> = ({ open, onClose }) => {
                                     {...field}
                                     prefix={<UserOutlined className="site-form-item-icon" />}
                                     placeholder="Введите имя"
-                                    {...errors.username && "Введите имя"}
+                                    {...errors.fullName && "Введите имя"}
                                 />
                         }
-                        name="username"
+                        name="fullName"
                         control={control}
                         defaultValue=""
                         rules={{
