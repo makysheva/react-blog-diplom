@@ -1,10 +1,10 @@
 import { Dispatch, FC, SetStateAction } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { SubmitHandler, useForm, Controller } from "react-hook-form"
 import { Button, Form, Input, Modal, Space } from 'antd'
-import { EyeInvisibleOutlined, EyeTwoTone, LockOutlined, UserOutlined } from '@ant-design/icons'
+import { EyeInvisibleOutlined, EyeTwoTone, HistoryOutlined, LockOutlined, UserOutlined } from '@ant-design/icons'
 import { instance } from '../../config/axios'
 import axios from 'axios'
-import { authAPI } from '../../config/auth'
 
 interface LoginModalProps {
     open: boolean
@@ -21,17 +21,26 @@ type FormData = {
 export const LoginModal: FC<LoginModalProps> = ({ open, onClose, handleClickOpenSignUp }) => {
     const { control, register, handleSubmit, formState: { errors }, reset } = useForm<FormData>()
 
-    const onSubmit: SubmitHandler<FormData> = (data: any) => {
-        // axios.post('/auth/login', data)
-        //     .then(res => {
-        //         console.log(777, res)
-        //     })
-        //     .catch(err => {
-        //         alert(err)
-        //     })
+    const navigate = useNavigate()
 
-        // @ts-ignore
-        const userLogin = authAPI.login(data.email, data.password)
+    const onSubmit: SubmitHandler<FormData> = (data: any) => {
+        axios
+            .post(
+                "/login",
+                {
+                    username: data.email,
+                    password: data.password
+                }
+            )
+            .then(res => {
+                console.log(666, res);
+                window.localStorage.setItem('token', res.data.token)
+                navigate('/', { replace: true })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
         reset()
         onClose()
     }
