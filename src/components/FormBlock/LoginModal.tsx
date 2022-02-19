@@ -1,15 +1,12 @@
-import { Dispatch, FC, SetStateAction } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { FC } from 'react'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { SubmitHandler, useForm, Controller } from "react-hook-form"
-import { Button, Form, Input, Modal, Space } from 'antd'
-import { EyeInvisibleOutlined, EyeTwoTone, HistoryOutlined, LockOutlined, UserOutlined } from '@ant-design/icons'
+import { Button, Form, Input, Modal, Space, message } from 'antd'
+import { EyeInvisibleOutlined, EyeTwoTone, LockOutlined, UserOutlined } from '@ant-design/icons'
 import { instance } from '../../config/axios'
-import axios from 'axios'
-
 interface LoginModalProps {
-    open: boolean
-    onClose: () => void
-    handleClickOpenSignUp: Function
+    isOpenModal: boolean
+    setIsOpenModal: (arg: boolean) => void
 }
 
 type FormData = {
@@ -18,35 +15,36 @@ type FormData = {
     password: string
 }
 
-export const LoginModal: FC<LoginModalProps> = ({ open, onClose, handleClickOpenSignUp }) => {
+export const LoginModal: FC<LoginModalProps> = ({ isOpenModal, setIsOpenModal }) => {
     const { control, register, handleSubmit, formState: { errors }, reset } = useForm<FormData>()
 
     const navigate = useNavigate()
 
-    const onSubmit: SubmitHandler<FormData> = (data: any) => {
-        axios
-            .post(
-                "/login",
-                {
-                    username: data.email,
-                    password: data.password
-                }
-            )
-            .then(res => {
-                console.log(666, res);
-                window.localStorage.setItem('token', res.data.token)
-                navigate('/', { replace: true })
-            })
-            .catch(err => {
-                console.log(err);
-            })
+    const handleCloseModal = () => {
+        setIsOpenModal(false)
+        navigate('/', { replace: true })
+    }
 
-        reset()
-        onClose()
+    const onSubmit: SubmitHandler<FormData> = (data: any) => {
+        try {
+            instance.post('/auth/login', {
+                email: data.email,
+                password: data.password,
+            })
+                .then(res => {
+                    window.localStorage.setItem('token', res.data.token)
+                    reset()
+                    message.success('Успешная авторизация!')
+                    navigate('/profile', { replace: true })
+                })
+        } catch (error) {
+            message.error(error)
+        }
+
     }
 
     return (
-        <Modal title="Войти" visible={open} onOk={onClose} onCancel={onClose}>
+        <Modal title="Войти" visible={isOpenModal} onOk={handleCloseModal} onCancel={handleCloseModal}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Form.Item>
                     <Controller
@@ -94,7 +92,7 @@ export const LoginModal: FC<LoginModalProps> = ({ open, onClose, handleClickOpen
                     <Button type="primary" htmlType="submit" className="login-form-button">
                         Войти
                     </Button>
-                    &nbsp; или <a onClick={(e: React.MouseEvent) => handleClickOpenSignUp(e)}>Зарегистрироваться!</a>
+                    &nbsp; или <NavLink to="/register">Зарегистрироваться!</NavLink>
                 </Form.Item>
             </form>
         </Modal >

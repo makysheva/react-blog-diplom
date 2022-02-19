@@ -1,7 +1,33 @@
-import React from 'react'
+import { Col, Row } from 'antd'
+import { Header } from 'antd/lib/layout/layout'
+import { Dispatch, FC, SetStateAction } from 'react'
 
-export const Home = () => {
+import { CardBlock } from '../components/CardBlock'
+import { HeaderBlock } from '../components/HeaderBlock'
+import { Post } from '../components/Post'
+
+import { TitleCard } from '../components/TitleCard'
+
+interface HomeProps {
+    isAuth: boolean
+    setIsOpenModal: Dispatch<SetStateAction<boolean>>
+}
+
+export const Home: FC<HomeProps> = ({ isAuth, setIsOpenModal }) => {
     return (
-        <div>Home</div>
+        <Row>
+            <Col span={12} style={{ paddingTop: '50px', paddingLeft: '40px' }}>
+                <TitleCard />
+                <CardBlock />
+            </Col>
+            <Col span={12} >
+                <Header>
+                    <HeaderBlock isAuth={isAuth} setIsOpenModal={setIsOpenModal} />
+                </Header>
+                <Post />
+                <Post />
+                <Post />
+            </Col>
+        </Row>
     )
 }

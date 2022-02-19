@@ -1,13 +1,13 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { SubmitHandler, useForm, Controller } from "react-hook-form"
-import { Form, Button, Modal, Input, Space } from 'antd'
+import { Form, Button, Modal, Input, Space, message } from 'antd'
 import { UserOutlined, MailOutlined, LockOutlined, EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'
-import axios from 'axios'
 import { instance } from '../../config/axios'
+import { useNavigate } from 'react-router-dom'
 
-export interface RegisterModalProps {
-    open: boolean
-    onClose: () => void
+interface RegisterModalProps {
+    isOpenModal: boolean
+    setIsOpenModal: (arg: boolean) => void
 }
 
 type FormData = {
@@ -16,8 +16,14 @@ type FormData = {
     password: string
 }
 
-export const RegisterModal: FC<RegisterModalProps> = ({ open, onClose }) => {
-    const { control, register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
+export const RegisterModal: FC<RegisterModalProps> = ({ isOpenModal, setIsOpenModal }) => {
+    const { control, register, handleSubmit, formState: { errors }, reset } = useForm<FormData>()
+    const navigate = useNavigate()
+
+    const handleCloseModal = (): void => {
+        setIsOpenModal(false)
+        navigate('/', { replace: true })
+    }
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
         try {
@@ -28,17 +34,17 @@ export const RegisterModal: FC<RegisterModalProps> = ({ open, onClose }) => {
             })
                 .then(res => {
                     window.localStorage.setItem('token', res.data.token)
+                    reset()
+                    message.success('Успешная регистрация!')
+                    navigate('/profile', { replace: true })
                 })
-            reset()
-            alert("Успешная регистрация!")
-            onClose()
         } catch (error) {
-            alert(error);
+            message.error(error)
         }
     }
 
     return (
-        <Modal title="Зарегистрироваться" visible={open} onOk={onClose} onCancel={onClose}>
+        <Modal title="Зарегистрироваться" visible={isOpenModal} onOk={handleCloseModal} onCancel={handleCloseModal}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Form.Item>
                     <Controller

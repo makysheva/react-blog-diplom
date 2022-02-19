@@ -5,14 +5,14 @@ const { Title } = Typography
 
 export const Post: FC = () => {
     return (
-        <Card>
+        <Card hoverable>
             <Row>
-                <Col span={14}>
+                <Col span={13} style={{ marginRight: '10px' }}>
                     <Title level={2}>Что такое React?</Title>
                     <p>React — это декларативная, эффективная и гибкая JavaScript-библиотека для создания пользовательских интерфейсов. Она позволяет вам собирать сложный UI из маленьких изолированных кусочков кода, называемых «компонентами».</p>
                 </Col>
 
-                <Col span={10}>
+                <Col span={9}>
                     <Image
                         width={200}
                         height={200}
