@@ -2,7 +2,7 @@ import { FC, useState } from 'react'
 import { SubmitHandler, useForm, Controller } from "react-hook-form"
 import { Form, Button, Modal, Input, Space, message } from 'antd'
 import { UserOutlined, MailOutlined, LockOutlined, EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'
-import { instance } from '../../config/axios'
+import { instance } from '../../axios'
 import { useNavigate } from 'react-router-dom'
 
 interface RegisterModalProps {

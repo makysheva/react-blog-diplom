@@ -1,0 +1,31 @@
+.title {
+    border: none;
+    font-size: 38px;
+    padding-left: 0;
+
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+.text {
+    &:focus {
+        box-shadow: none;
+        border-color: #002140;
+    }
+
+    &:hover {
+        border-color: #002140;
+    }
+}
+
+.file {
+    & :global(.ant-btn:hover), :global(.ant-btn:focus) {
+        color: #002140;
+        border-color: #002140;
+     }
+}
+
+.submitBtn {
+    background: #002140 !important;
+}

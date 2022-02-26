@@ -6,12 +6,16 @@ import { Content } from 'antd/lib/layout/layout'
 
 import { Home } from './pages/Home'
 import { Profile } from './pages/Profile'
+
 import { LoginModal } from './components/FormBlock/LoginModal'
+import { MenuBlock } from './components/MenuBlock'
 import { RegisterModal } from './components/FormBlock/RegisterModal'
-import { MenuBlock } from './components/MenuBlock/MenuBlock'
 
 import 'antd/dist/antd.css'
 import './App.module.scss'
+import { About } from './components/About/About'
+import { CreatePostForm } from './components/FormBlock/CreatePostForm'
+import { Posts } from './components/Posts'
 
 export const App: FC = () => {
   const [isAuth, setIsAuth] = useState<boolean>(false)
@@ -24,20 +28,22 @@ export const App: FC = () => {
   }, [pathname, token])
 
   return (
-    <>
-      <Layout style={{ height: '100vh', background: '#fff' }}>
-        <Layout style={{ background: '#fff', height: '100vh' }}>
-          <Content>
-            <Routes>
-              <Route path='/' element={<Home isAuth={isAuth} setIsOpenModal={setIsOpenModal} />} />
-              <Route path='/profile' element={<Profile />} />
-              <Route path='/login' element={<LoginModal isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />} />
-              <Route path='/register' element={<RegisterModal isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />} />
-            </Routes>
-          </Content>
-        </Layout>
-        <MenuBlock isAuth={isAuth} setIsOpenModal={setIsOpenModal} />
+    <Layout style={{ height: '100vh', background: '#fff' }}>
+      <Layout style={{ background: '#fff', height: '100vh' }}>
+        <Content>
+          <Routes>
+            <Route path="/" element={<Home isAuth={isAuth} setIsOpenModal={setIsOpenModal} />}>
+              <Route path="/" element={<About />} />
+              <Route path="create" element={<CreatePostForm />} />
+              <Route path="posts/:id" element={<Posts />} />
+            </Route>
+            <Route path='/profile' element={<Profile />} />
+            <Route path='/login' element={<LoginModal isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />} />
+            <Route path='/register' element={<RegisterModal isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />} />
+          </Routes>
+        </Content>
       </Layout>
-    </>
+      <MenuBlock isAuth={isAuth} setIsOpenModal={setIsOpenModal} />
+    </Layout>
   )
 }

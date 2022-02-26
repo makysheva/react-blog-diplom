@@ -1,12 +1,10 @@
+import { Dispatch, FC, SetStateAction } from 'react'
 import { Col, Row } from 'antd'
 import { Header } from 'antd/lib/layout/layout'
-import { Dispatch, FC, SetStateAction } from 'react'
+import { Outlet } from 'react-router-dom'
 
-import { CardBlock } from '../components/CardBlock'
 import { HeaderBlock } from '../components/HeaderBlock'
-import { Post } from '../components/Post'
-
-import { TitleCard } from '../components/TitleCard'
+import { Posts } from '../components/Posts'
 
 interface HomeProps {
     isAuth: boolean
@@ -16,17 +14,14 @@ interface HomeProps {
 export const Home: FC<HomeProps> = ({ isAuth, setIsOpenModal }) => {
     return (
         <Row>
-            <Col span={12} style={{ paddingTop: '50px', paddingLeft: '40px' }}>
-                <TitleCard />
-                <CardBlock />
+            <Col span={12} style={{ padding: '40px' }}>
+                <Outlet />
             </Col>
             <Col span={12} >
                 <Header>
                     <HeaderBlock isAuth={isAuth} setIsOpenModal={setIsOpenModal} />
                 </Header>
-                <Post />
-                <Post />
-                <Post />
+                <Posts />
             </Col>
         </Row>
     )

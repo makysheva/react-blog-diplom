@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { SubmitHandler, useForm, Controller } from "react-hook-form"
 import { Button, Form, Input, Modal, Space, message } from 'antd'
 import { EyeInvisibleOutlined, EyeTwoTone, LockOutlined, UserOutlined } from '@ant-design/icons'
-import { instance } from '../../config/axios'
+import { instance } from '../../axios'
 interface LoginModalProps {
     isOpenModal: boolean
     setIsOpenModal: (arg: boolean) => void
@@ -57,6 +57,7 @@ export const LoginModal: FC<LoginModalProps> = ({ isOpenModal, setIsOpenModal })
                                     {...errors.fullName && "Введите email"}
                                 />
                         }
+                        {...register("email")}
                         name="email"
                         control={control}
                         defaultValue=""
