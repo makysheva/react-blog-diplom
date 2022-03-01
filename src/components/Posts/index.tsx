@@ -1,38 +1,33 @@
-import { FC, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { FC, Key, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Row, Col } from 'antd'
 import { Post } from '../Post'
 import { useSelector } from 'react-redux'
+import type { RootState, AppDispatch } from '../../redux/store'
+import { getAllPost } from '../../redux/actions/postsAction'
+import * as postSelectors from '../../redux/selectors'
 
-import styles from './Posts.module.scss'
+type PostsData = [{
+    _id: string,
+    title: string,
+    text: string,
+    description: string,
+    user: object,
+}]
 
-import { getAllPost, getPost } from '../../redux/actions/postsAction'
-
-
-export const Posts: FC = () => {
-    const dispatch = useDispatch()
-    const { id } = useParams()
-    //@ts-ignore
-    const posts = useSelector(state => state.posts.allPosts)
-
-    console.log(222, posts)
+export const Posts: FC<PostsData> = () => {
+    const dispatch = useDispatch<AppDispatch>()
+    const allPost = useSelector<RootState>(postSelectors.postData) as PostsData
 
     useEffect(() => {
-        //@ts-ignore
-        dispatch(getPost(id))
         dispatch(getAllPost())
-    }, [id, dispatch])
+    }, [dispatch])
 
     return (
         <Row style={{ justifyContent: 'space-between' }}>
             <Col span={24}>
                 {
-                    posts.map((post: any) => (
-                        <>
-                            <Post post={post} />
-                        </>
-                    ))
+                    allPost && allPost.map(item => <Post key={item._id} post={item} />)
                 }
             </Col>
         </Row>

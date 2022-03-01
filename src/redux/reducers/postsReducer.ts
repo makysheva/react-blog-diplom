@@ -1,8 +1,7 @@
 import { CREATE_POST, GET_ALL_POST, GET_POST } from "../types"
 
 const initialState = {
-    post: [],
-    allPosts: [],
+    postData: []
 }
 
 export const postsReducer = (state = initialState, action: any) => {
@@ -10,18 +9,18 @@ export const postsReducer = (state = initialState, action: any) => {
         case CREATE_POST:
             return {
                 ...state,
-                post: action.payload,
+                postData: action.payload,
             }
         case GET_POST:
             return {
                 ...state,
-                post: action.payload.items
+                postData: action.payload,
             }
 
         case GET_ALL_POST:
             return {
                 ...state,
-                allPosts: action.payload.items
+                postData: action.payload.items,
             }
         default:
             return state

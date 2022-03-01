@@ -1,0 +1,1 @@
+export const postData = (state: { posts: { postData: object[]; } }) => state.posts.postData

@@ -1,5 +1,9 @@
-import { Card, Col, Row, Typography, Image } from 'antd'
+import { Card, Col, Row, Typography, Image, message } from 'antd'
 import { FC } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { getOnePost } from '../../redux/actions/postsAction'
+import type { AppDispatch } from '../../redux/store'
 
 const { Title } = Typography
 
@@ -8,8 +12,16 @@ interface PostProps {
 }
 
 export const Post: FC<PostProps> = ({ post }) => {
+    const dispatch = useDispatch<AppDispatch>()
+    const navigate = useNavigate()
+
+    const handleClickCard = (id: string) => {
+        dispatch(getOnePost(id))
+        navigate(`/posts/${id}`, { replace: true })
+    }
+
     return (
-        <Card hoverable key={post._id} style={{ maxWidth: '540px', margin: '25px auto' }}>
+        <Card hoverable key={post._id} style={{ maxWidth: '540px', margin: '25px auto' }} onClick={() => handleClickCard(post._id)}>
             <Row>
                 <Col span={13} style={{ marginRight: '10px' }}>
                     <Title level={2}>{post.title}</Title>

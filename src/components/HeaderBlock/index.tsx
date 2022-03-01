@@ -57,7 +57,7 @@ export const HeaderBlock: FC<HeaderBlockProps> = ({ isAuth, setIsOpenModal }): R
 
             <Col span={6} className={styles.btn}>
                 {isAuth && <SearchOutlined className={styles.icon} onClick={toggleShowSearch} />}
-                {isAuth && <EditOutlined className={styles.icon} />}
+                {isAuth && <Link to="/create"><EditOutlined className={styles.icon} /></Link>}
                 {isAuth ? <LogoutOutlined onClick={handleClickAuth} className={styles.icon} /> : <LoginOutlined onClick={handleClickAuth} className={styles.icon} />}
             </Col>
         </Row>

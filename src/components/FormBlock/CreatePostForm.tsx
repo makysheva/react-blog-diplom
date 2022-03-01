@@ -1,12 +1,12 @@
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, message } from 'antd'
 import { FC, useCallback, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
-import { createPost } from '../../redux/actions/postsAction'
+import { createPost, getAllPost } from '../../redux/actions/postsAction'
 import SimpleMDE from "react-simplemde-editor"
 
 import 'easymde/dist/easymde.min.css'
 import styles from '../Posts/Posts.module.scss'
+import { useNavigate } from 'react-router-dom'
 
 const { TextArea } = Input
 
@@ -20,16 +20,24 @@ type FormData = {
 export const CreatePostForm: FC = () => {
     const { control, register, handleSubmit, formState: { errors }, reset } = useForm<FormData>()
     const [textAreaValue, setTextAreaValue] = useState<string>('')
-    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const onSubmit: SubmitHandler<FormData> = async (data: any) => {
-        dispatch(createPost({
-            title: data.title,
-            description: data.description,
-            text: textAreaValue,
-        }))
-
-        reset()
+    const onSubmit: SubmitHandler<FormData> = async ({ title, description }) => {
+        return (dispatch: (arg0: { (dispatch: any): Promise<void>; (dispatch: any): Promise<void> }) => Promise<any>) => {
+            dispatch(createPost({
+                title,
+                description,
+                text: textAreaValue,
+            }))
+                .then(() => {
+                    reset()
+                    dispatch(getAllPost())
+                    navigate('/', { replace: true })
+                })
+                .catch(() => {
+                    message.error(Error)
+                });
+        }
 
         // const fileElem = data.imageUrl
         // const file = fileElem.fileList[0]
@@ -40,7 +48,7 @@ export const CreatePostForm: FC = () => {
         // const { url } = await dispatch(postsAPI.uploadImg(formData))
     }
 
-    const onChange = useCallback((value: any) => {
+    const onChange = useCallback((value: string) => {
         setTextAreaValue(value);
     }, [])
 

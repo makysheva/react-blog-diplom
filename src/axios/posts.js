@@ -6,11 +6,13 @@ export const postsAPI = {
   },
 
   getPost(postId) {
-    return instance.get(`posts/${postId}`);
+    return instance.get(`/posts/${postId}`)
   },
+
   createPost(data) {
-    return instance.post("/posts", data);
+    return instance.post("/posts", data)
   },
+
   uploadImg(formData) {
     return instance.post("/posts/upload", formData, {
       headers: {
