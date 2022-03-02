@@ -16,6 +16,7 @@ export const Post: FC<PostProps> = ({ post }) => {
     const navigate = useNavigate()
 
     const handleClickCard = (id: string) => {
+        //@ts-ignore
         dispatch(getOnePost(id))
         navigate(`/posts/${id}`, { replace: true })
     }

@@ -2,7 +2,7 @@ import { instance } from "./index"
 
 export const postsAPI = {
   getAllPost(){
-    return instance.get('/posts')
+    return instance.get("/posts")
   },
 
   getPost(postId) {

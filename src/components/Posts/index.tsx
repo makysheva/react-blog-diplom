@@ -7,19 +7,21 @@ import type { RootState, AppDispatch } from '../../redux/store'
 import { getAllPost } from '../../redux/actions/postsAction'
 import * as postSelectors from '../../redux/selectors'
 
-type PostsData = [{
+type PostsData = {
     _id: string,
     title: string,
     text: string,
     description: string,
     user: object,
-}]
+}
 
 export const Posts: FC<PostsData> = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const allPost = useSelector<RootState>(postSelectors.postData) as PostsData
+    //@ts-ignore
+    const { allPost } = useSelector<RootState>(postSelectors.allPost)
 
     useEffect(() => {
+        //@ts-ignore
         dispatch(getAllPost())
     }, [dispatch])
 
@@ -27,6 +29,7 @@ export const Posts: FC<PostsData> = () => {
         <Row style={{ justifyContent: 'space-between' }}>
             <Col span={24}>
                 {
+                    //@ts-ignore
                     allPost && allPost.map(item => <Post key={item._id} post={item} />)
                 }
             </Col>

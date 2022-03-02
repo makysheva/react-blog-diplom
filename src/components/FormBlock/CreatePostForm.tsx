@@ -35,7 +35,7 @@ export const CreatePostForm: FC = () => {
                     navigate('/', { replace: true })
                 })
                 .catch(() => {
-                    message.error(Error)
+                    message.error("Не удалось создать пост")
                 });
         }
 
@@ -49,7 +49,7 @@ export const CreatePostForm: FC = () => {
     }
 
     const onChange = useCallback((value: string) => {
-        setTextAreaValue(value);
+        setTextAreaValue(value)
     }, [])
 
     return (
