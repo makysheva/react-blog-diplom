@@ -7,15 +7,15 @@ import type { RootState, AppDispatch } from '../../redux/store'
 import { getAllPost } from '../../redux/actions/postsAction'
 import * as postSelectors from '../../redux/selectors/postsSelector'
 
-type PostsData = {
-    _id: string,
-    title: string,
-    text: string,
-    description: string,
-    user: object,
-}
+// type PostsData = {
+//     _id: string,
+//     title: string,
+//     text: string,
+//     description: string,
+//     user: object,
+// }
 
-export const Posts: FC<PostsData> = () => {
+export const Posts: FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     //@ts-ignore
     const allPost = useSelector<RootState>(postSelectors.posts)

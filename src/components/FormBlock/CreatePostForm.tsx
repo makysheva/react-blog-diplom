@@ -6,9 +6,8 @@ import SimpleMDE from "react-simplemde-editor"
 
 import 'easymde/dist/easymde.min.css'
 import styles from '../Posts/Posts.module.scss'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import type { AppDispatch } from '../../redux/store'
 
 const { TextArea } = Input
 

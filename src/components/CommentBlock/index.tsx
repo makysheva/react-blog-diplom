@@ -36,12 +36,14 @@ export const CommentBlock: FC = () => {
     }
 
     const actions = [
+        //@ts-ignore
         <Tooltip key="comment-basic-like">
             <span onClick={like}>
                 {createElement(action === 'liked' ? LikeFilled : LikeOutlined)}
                 <span className="comment-action">{likes}</span>
             </span>
         </Tooltip>,
+        //@ts-ignore
         <Tooltip key="comment-basic-dislike">
             <span onClick={dislike}>
                 {React.createElement(action === 'disliked' ? DislikeFilled : DislikeOutlined)}
@@ -53,7 +55,9 @@ export const CommentBlock: FC = () => {
     return (
         <>
 
-            {allComments.userCommentsData.length > 0 &&
+            {//@ts-ignore
+                allComments.userCommentsData.length > 0 &&
+                //@ts-ignore
                 allComments.userCommentsData.map((comment: { user: { fullName: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined }; text: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined }) => {
                     return (
                         <Comment

@@ -1,4 +1,4 @@
-import { Button, Form, message } from 'antd'
+import { Button, Form } from 'antd'
 import { FC, useCallback, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import SimpleMDE from "react-simplemde-editor"
@@ -15,10 +15,9 @@ type FormData = {
 }
 
 export const CreateCommentForm: FC = () => {
-    const { handleSubmit, formState: { errors }, reset } = useForm<FormData>()
+    const { handleSubmit } = useForm<FormData>()
     const [textAreaValue, setTextAreaValue] = useState<string>('')
     const { id } = useParams()
-    const navigate = useNavigate()
     const dispatch = useDispatch()
 
     const onSubmit: SubmitHandler<FormData> = async () => {
@@ -28,6 +27,7 @@ export const CreateCommentForm: FC = () => {
                 postId: id,
             }, id)
         )
+        //@ts-ignore
         dispatch(getAllCommentsOfPost(id))
     }
 
