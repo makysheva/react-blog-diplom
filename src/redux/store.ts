@@ -1,12 +1,13 @@
 import { combineReducers, createStore, applyMiddleware } from "redux"
-import { getAllPostReducer, postsReducer } from "./reducers/postsReducer"
+import { postsReducer } from "./reducers/postsReducer"
 import { composeWithDevTools } from "redux-devtools-extension"
 import thunk from "redux-thunk"
+import { commentsReducer } from "./reducers/commentsReducer"
 
 const rootReducer = combineReducers({
     posts: postsReducer,
-    allPost: getAllPostReducer,
-});
+    comments: commentsReducer,
+})
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))
 

@@ -1,0 +1,1 @@
+export const getComments = (state: { comments: { comments: object[] }; }) => state.comments

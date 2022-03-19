@@ -1,10 +1,9 @@
 import { message } from "antd"
 import { postsAPI } from "../../axios/posts"
-import { CREATE_POST, GET_ALL_POST, GET_POST } from "../types"
+import { CREATE_POST, GET_ALL_POST, GET_POST } from "../types/post"
 
 export const createPost = (post: { title: string; description: string; text: string }) => {
-    //@ts-ignore
-    return async (dispatch) => {
+    return async (dispatch: (arg0: { type: string; payload: any }) => void) => {
         try {
             const { data, status } = await postsAPI.createPost(post)
             if (status === 201) {
@@ -18,8 +17,7 @@ export const createPost = (post: { title: string; description: string; text: str
 }
 
 export const getOnePost = (postId: string) => {
-    //@ts-ignore
-    return async (dispatch) => {
+    return async (dispatch: (arg0: { type: string; payload: any; }) => void) => {
         try {
             const { data, status } = await postsAPI.getPost(postId)
             if (status === 200) {
@@ -37,7 +35,7 @@ export const getAllPost = () => {
         try {
             const { data, status } = await postsAPI.getAllPost()
             if (status === 200) {
-                dispatch(getAllPosts(data))
+                dispatch(getAllPosts(data.items))
             }
         } catch (error) {
             message.error("Произошла ошибка при получении данных всех постов")
@@ -45,8 +43,8 @@ export const getAllPost = () => {
     }
 }
 //@ts-ignore
-export const createPosts = (data) => ({ type: CREATE_POST, payload: data })
+export const createPosts = (payload) => ({ type: CREATE_POST, payload })
 //@ts-ignore
-export const getOnePosts = (data) => ({ type: GET_POST, payload: data })
+export const getOnePosts = (payload) => ({ type: GET_POST, payload })
 //@ts-ignore
-export const getAllPosts = (data) => ({ type: GET_ALL_POST, payload: data })
+export const getAllPosts = (payload) => ({ type: GET_ALL_POST, payload })

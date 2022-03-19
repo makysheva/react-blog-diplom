@@ -1,4 +1,4 @@
-import { Card, Col, Row, Typography, Image, message } from 'antd'
+import { Card, Col, Row, Typography, Image } from 'antd'
 import { FC } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'

@@ -1,4 +1,4 @@
-import { Button, Form, Input, message } from 'antd'
+import { Button, Form, Input } from 'antd'
 import { FC, useCallback, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { createPost, getAllPost } from '../../redux/actions/postsAction'
@@ -6,7 +6,9 @@ import SimpleMDE from "react-simplemde-editor"
 
 import 'easymde/dist/easymde.min.css'
 import styles from '../Posts/Posts.module.scss'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import type { AppDispatch } from '../../redux/store'
 
 const { TextArea } = Input
 
@@ -20,24 +22,19 @@ type FormData = {
 export const CreatePostForm: FC = () => {
     const { control, register, handleSubmit, formState: { errors }, reset } = useForm<FormData>()
     const [textAreaValue, setTextAreaValue] = useState<string>('')
+    const dispatch = useDispatch()
     const navigate = useNavigate()
 
     const onSubmit: SubmitHandler<FormData> = async ({ title, description }) => {
-        return (dispatch: (arg0: { (dispatch: any): Promise<void>; (dispatch: any): Promise<void> }) => Promise<any>) => {
-            dispatch(createPost({
+        dispatch(
+            createPost({
                 title,
                 description,
                 text: textAreaValue,
-            }))
-                .then(() => {
-                    reset()
-                    dispatch(getAllPost())
-                    navigate('/', { replace: true })
-                })
-                .catch(() => {
-                    message.error("Не удалось создать пост")
-                });
-        }
+            })
+        )
+        dispatch(getAllPost())
+        navigate('/', { replace: true })
 
         // const fileElem = data.imageUrl
         // const file = fileElem.fileList[0]
@@ -53,53 +50,54 @@ export const CreatePostForm: FC = () => {
     }, [])
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Form.Item required>
-                <Controller
-                    render={
-                        ({ field }) =>
-                            <Input
-                                {...field}
-                                placeholder="Введите заголовок"
-                                {...errors.title && "Введите заголовок"}
-                                className={styles.title}
-                            />
-                    }
-                    {...register("title")}
-                    name="title"
-                    control={control}
-                    defaultValue=""
-                    rules={{
-                        required: true
-                    }}
-                />
-            </Form.Item>
+        <>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Form.Item required>
+                    <Controller
+                        render={
+                            ({ field }) =>
+                                <Input
+                                    {...field}
+                                    placeholder="Введите заголовок"
+                                    {...errors.title && "Введите заголовок"}
+                                    className={styles.title}
+                                />
+                        }
+                        {...register("title")}
+                        name="title"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                            required: true
+                        }}
+                    />
+                </Form.Item>
 
-            <Form.Item>
-                <label>Короткое описание</label>
-                <Controller
-                    render={
+                <Form.Item>
+                    <label>Короткое описание</label>
+                    <Controller
+                        render={
 
-                        ({ field }) =>
-                            <TextArea
-                                {...field}
-                                placeholder="Введите краткое описание"
-                                autoSize={{ minRows: 3, maxRows: 5 }}
-                                className={styles.text}
-                                {...errors.description && "Введите краткое описание"}
-                            />
-                    }
-                    {...register("description")}
-                    name="description"
-                    control={control}
-                    defaultValue=""
-                    rules={{
-                        required: true
-                    }}
-                />
-            </Form.Item>
+                            ({ field }) =>
+                                <TextArea
+                                    {...field}
+                                    placeholder="Введите краткое описание"
+                                    autoSize={{ minRows: 3, maxRows: 5 }}
+                                    className={styles.text}
+                                    {...errors.description && "Введите краткое описание"}
+                                />
+                        }
+                        {...register("description")}
+                        name="description"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                            required: true
+                        }}
+                    />
+                </Form.Item>
 
-            {/* <Form.Item className={styles.file}>
+                {/* <Form.Item className={styles.file}>
                         <label>Ссылка на изображение: </label>
                         <Controller
                             render={
@@ -123,17 +121,18 @@ export const CreatePostForm: FC = () => {
                         />
                     </Form.Item> */}
 
-            <Form.Item>
-                <label>Полное описание:</label>
-                <SimpleMDE
-                    value={textAreaValue}
-                    onChange={onChange}
-                />
-            </Form.Item>
+                <Form.Item>
+                    <label>Полное описание:</label>
+                    <SimpleMDE
+                        value={textAreaValue}
+                        onChange={onChange}
+                    />
+                </Form.Item>
 
-            <Form.Item>
-                <Button type="primary" htmlType="submit" className={styles.submitBtn}>Опубликовать</Button>
-            </Form.Item>
-        </form>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" className={styles.submitBtn}>Опубликовать</Button>
+                </Form.Item>
+            </form>
+        </>
     )
 }

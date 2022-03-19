@@ -1,31 +1,21 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Image, Typography } from 'antd'
 import type { RootState, AppDispatch } from '../../redux/store'
-import { getAllPost, getOnePost } from '../../redux/actions/postsAction'
-import * as postSelectors from '../../redux/selectors'
+import { getOnePost } from '../../redux/actions/postsAction'
+import * as postSelectors from '../../redux/selectors/postsSelector'
 import { CommentBlock } from '../CommentBlock'
 
 const { Title } = Typography
 
-// interface PostData {
-//     _id: string,
-//     title: string,
-//     text: string,
-//     description: string,
-//     user: object,
-// }
-
-// type Posts = PostData[]
-
 export const PostBlock: FC = () => {
     const { id } = useParams()
     const dispatch = useDispatch<AppDispatch>()
-    const allPost = useSelector<RootState>(postSelectors.allPost)
+    const allPost = useSelector<RootState>(postSelectors.posts)
 
     //@ts-ignore
-    let currentPost = allPost.allPost.find(post => post._id === id)
+    let currentPost = allPost.find(post => post._id === id)
 
     useEffect(() => {
         //@ts-ignore
@@ -46,9 +36,7 @@ export const PostBlock: FC = () => {
                 <p>{currentPost.text}</p>
             </div>
 
-            <div>
-                <CommentBlock />
-            </div>
+            <CommentBlock />
         </>
     )
 }

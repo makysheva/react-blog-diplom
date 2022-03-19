@@ -1,11 +1,11 @@
-import { FC, Key, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Row, Col } from 'antd'
 import { Post } from '../Post'
 import { useSelector } from 'react-redux'
 import type { RootState, AppDispatch } from '../../redux/store'
 import { getAllPost } from '../../redux/actions/postsAction'
-import * as postSelectors from '../../redux/selectors'
+import * as postSelectors from '../../redux/selectors/postsSelector'
 
 type PostsData = {
     _id: string,
@@ -18,7 +18,7 @@ type PostsData = {
 export const Posts: FC<PostsData> = () => {
     const dispatch = useDispatch<AppDispatch>()
     //@ts-ignore
-    const { allPost } = useSelector<RootState>(postSelectors.allPost)
+    const allPost = useSelector<RootState>(postSelectors.posts)
 
     useEffect(() => {
         //@ts-ignore

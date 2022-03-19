@@ -1,82 +1,53 @@
-import React, { FC, useState } from 'react'
-import { Comment, Avatar, Form, Button, List, Input } from 'antd'
-import moment from 'moment'
+import { Button, Form, message } from 'antd'
+import { FC, useCallback, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import SimpleMDE from "react-simplemde-editor"
 
-const { TextArea } = Input
+import 'easymde/dist/easymde.min.css'
+import styles from '../Posts/Posts.module.scss'
+import { useNavigate, useParams } from 'react-router-dom'
+import { createComment, getAllCommentsOfPost } from '../../redux/actions/commentsAction'
+import { useDispatch } from 'react-redux'
 
-const CommentList = ({ comments }) => (
-    <List
-        dataSource={comments}
-        header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
-        itemLayout="horizontal"
-        renderItem={props => <Comment {...props} />}
-    />
-)
+type FormData = {
+    text: string
+    postId: string
+}
 
-const Editor = ({ onChange, onSubmit, submitting, value }) => (
-    <>
-        <Form.Item>
-            <TextArea rows={4} onChange={onChange} value={value} />
-        </Form.Item>
-        <Form.Item>
-            <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
-                Add Comment
-            </Button>
-        </Form.Item>
-    </>
-)
+export const CreateCommentForm: FC = () => {
+    const { handleSubmit, formState: { errors }, reset } = useForm<FormData>()
+    const [textAreaValue, setTextAreaValue] = useState<string>('')
+    const { id } = useParams()
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
-export const Comment: FC = () => {
-    const [comment, setComment] = useState({
-        comments: [],
-        submitting: false,
-        value: '',
-    })
-
-    handleSubmit = () => {
-        if (!comment.value) {
-            return;
-        }
-
-        setComment({ submitting: true })
-
-        setTimeout(() => {
-            setComment({
-                submitting: false,
-                value: '',
-                comments: [
-                    ...comment.comments,
-                    {
-                        author: 'Han Solo',
-                        avatar: 'https://joeschmoe.io/api/v1/random',
-                        content: <p>{comment.value}</p>,
-                        datetime: moment().fromNow(),
-                    },
-                ],
-            });
-        }, 1000)
+    const onSubmit: SubmitHandler<FormData> = async () => {
+        dispatch(
+            createComment({
+                text: textAreaValue,
+                postId: id,
+            }, id)
+        )
+        dispatch(getAllCommentsOfPost(id))
     }
 
-    handleChange = e => {
-        setComment({
-            value: e.target.value,
-        });
-    };
+    const onChange = useCallback((value: string) => {
+        setTextAreaValue(value)
+    }, [])
 
     return (
-        <>
-            {comments.length > 0 && <CommentList comments={comments} />}
-            <Comment
-                avatar={<Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />}
-                content={
-                    <Editor
-                        onChange={handleChange}
-                        onSubmit={handleSubmit}
-                        submitting={submitting}
-                        value={value}
-                    />
-                }
-            />
-        </>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <Form.Item>
+                <label>Добавить комментарий:</label>
+                <SimpleMDE
+                    value={textAreaValue}
+                    onChange={onChange}
+                />
+            </Form.Item>
+
+            <Form.Item>
+                <Button type="primary" htmlType="submit" className={styles.submitBtn}>Добавить</Button>
+            </Form.Item>
+        </form>
     )
 }
