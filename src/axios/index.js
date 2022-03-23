@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const instance = axios.create({
-    baseURL: 'http://localhost:5656',
+    baseURL: 'https://react-ts-blog.herokuapp.com/',
     headers: {
         Authorization: window.localStorage.getItem('token')
     }
