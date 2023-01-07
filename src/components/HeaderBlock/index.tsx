@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { Button, Col, Input, Row } from 'antd'
+import { Col, Input, Row } from 'antd'
 import { EditOutlined, LoginOutlined, LogoutOutlined, SearchOutlined } from '@ant-design/icons'
 import styles from './HeaderBlock.module.scss'
 import { Link, useNavigate } from 'react-router-dom'

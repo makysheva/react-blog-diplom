@@ -1,6 +1,5 @@
 import { Card, Typography, Tabs } from 'antd'
 import Title from 'antd/lib/typography/Title'
-import React, { useEffect } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 
 const { TabPane } = Tabs

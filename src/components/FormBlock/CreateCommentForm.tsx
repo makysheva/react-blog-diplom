@@ -5,7 +5,7 @@ import SimpleMDE from "react-simplemde-editor"
 
 import 'easymde/dist/easymde.min.css'
 import styles from '../Posts/Posts.module.scss'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { createComment, getAllCommentsOfPost } from '../../redux/actions/commentsAction'
 import { useDispatch } from 'react-redux'
 

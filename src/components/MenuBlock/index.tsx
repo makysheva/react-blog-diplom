@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import { Menu, Layout } from 'antd'
 import { AntDesignOutlined, HighlightOutlined, HomeOutlined, LoginOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
-import { Link, Navigate, NavLink, useNavigate, useParams } from 'react-router-dom'
+import { NavLink, useNavigate, useParams } from 'react-router-dom'
 
 
 const { Sider } = Layout

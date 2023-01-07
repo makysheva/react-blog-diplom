@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
 const { initRoutes } = require('./blog-api/routes');
 const morgan = require('morgan');
-const port = process.env.PORT || 5000;
+const port = process.env.local.NEXT_PUBLIC_API || 5000;
 
 require('dotenv').config();
 
@@ -32,7 +32,7 @@ mongoose
   })
   .then(() => {
     app.listen(process.env.PORT, () => {
-      console.log(`Сервер запущен http://localhost:${port}`);
+      console.log(`Сервер запущен ${port}`);
     });
   })
   .catch(console.log);

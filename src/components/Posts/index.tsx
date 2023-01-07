@@ -20,7 +20,7 @@ export const Posts: FC<TPosts> = ({isAuth}) => {
             }
         }
         fetchData()
-    }, [isAuth]);
+    }, [dispatch, isAuth]);
 
     return (
         <Row style={{ justifyContent: 'space-between' }}>
