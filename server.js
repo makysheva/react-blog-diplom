@@ -32,7 +32,7 @@ mongoose
   })
   .then(() => {
     app.listen(process.env.PORT, () => {
-      console.log(`Сервер запущен http://localhost:${process.env.PORT}`);
+      console.log(`Сервер запущен http://localhost:${port}`);
     });
   })
   .catch(console.log);

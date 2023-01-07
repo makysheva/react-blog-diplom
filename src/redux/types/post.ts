@@ -9,7 +9,13 @@ export const GET_COMMENTS = 'GET_COMMENTS'
 export const GET_USER_COMMENTS = 'GET_USER_COMMENTS'
 export const EDIT_COMMENT = 'EDIT_COMMENT'
 
-export interface Post {
+export interface IAllPost {
+    items: INewPost[];
+    total: number;
+
+}
+
+export interface IPost {
     _id: string;
     title: string;
     text: string;
@@ -22,10 +28,22 @@ export interface Post {
     __v: number;
 }
 
+export interface INewPost {
+    description?: string;
+    _id: string;
+    title: string;
+    text: string;
+    views: number;
+    user: UserInfo;
+    createdAt: Date;
+    updatedAt: Date;
+    __v: number;
+}
+
 export interface Comment {
     _id: string;
     text: string;
-    post: Post;
+    post: IPost;
     user: UserInfo;
     createdAt: string;
     updatedAt: string;

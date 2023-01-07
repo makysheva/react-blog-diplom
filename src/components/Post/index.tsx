@@ -1,23 +1,20 @@
 import { Card, Col, Row, Typography, Image } from 'antd'
 import { FC } from 'react'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getOnePost } from '../../redux/actions/postsAction'
-import type { AppDispatch } from '../../redux/store'
+import {INewPost} from "../../redux/types/post";
 
 const { Title } = Typography
 
 interface PostProps {
-    post: any
+    post: INewPost
 }
 
 export const Post: FC<PostProps> = ({ post }) => {
-    const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
 
     const handleClickCard = (id: string) => {
-        //@ts-ignore
-        dispatch(getOnePost(id))
+        getOnePost(id)
         navigate(`/posts/${id}`, { replace: true })
     }
 

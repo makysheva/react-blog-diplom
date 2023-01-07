@@ -21,7 +21,7 @@ export const Home: FC<HomeProps> = ({ isAuth, setIsOpenModal }) => {
                 <Header>
                     <HeaderBlock isAuth={isAuth} setIsOpenModal={setIsOpenModal} />
                 </Header>
-                <Posts />
+                <Posts isAuth={isAuth} />
             </Col>
         </Row>
     )
